@@ -1,4 +1,4 @@
-# GOLANG - Presentación
+# Golang - Presentación
 
 ![gadielMa](/gadielMa.png?raw=true "Gadiel Malagrino")
 
