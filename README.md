@@ -1,6 +1,6 @@
 # GOLANG - Presentación
 
-![gadielMa](/gadielMa.png?raw=true "Gadiel Malagrino")
+![gadielMa](/logo.png?raw=true "Gadiel Malagrino")
 
 
 @gmalagrino
