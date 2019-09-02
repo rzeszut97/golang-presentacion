@@ -1,8 +1,6 @@
 package main
 
-import (
-	"testing"
-)
+import "testing"
 
 // Sintaxis ´*_test.go´ ´Test*´
 
