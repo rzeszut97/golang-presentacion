@@ -1,10 +1,14 @@
 package main // Folder name
 
 import ( // Libraries
+
 	"fmt"
+	"log"
+	"net/http"
 
 	"github.com/fatih/color"
 	"github.com/gadielMa/golang-presentacion/examples"
+	"github.com/gorilla/mux"
 )
 
 type Persona struct {
@@ -25,7 +29,15 @@ var (
 	cyanBoldFmt = color.New(color.FgCyan, color.Bold)
 )
 
+func YourHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Gorilla!\n"))
+}
+
 func main() {
+	r := mux.NewRouter()
+	r.HandleFunc("/", YourHandler)
+	log.Fatal(http.ListenAndServe(":8000", r))
+
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
 	cyanFmt.Println("██╔════╝ ██╔═══██╗██║     ██╔══██╗████╗  ██║██╔════╝               ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║")
 	cyanFmt.Println("██║  ███╗██║   ██║██║     ███████║██╔██╗ ██║██║  ███╗    █████╗    ██████╔╝██████╔╝█████╗  ███████╗█████╗  ██╔██╗ ██║   ██║   ███████║██║     ██║██║   ██║██╔██╗ ██║")
