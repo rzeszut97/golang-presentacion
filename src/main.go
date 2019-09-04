@@ -57,7 +57,9 @@ func main() {
 
 /* func FuncName ( Parameters ) Returns */
 func (p Persona) despedirse() {
-	fmt.Println("Ahora... Manos a la obra", p.Nombre, "!\n")
+	fmt.Println("Ahora... Manos a la obra", p.Nombre)
+	fmt.Println("")
+
 }
 
 func continuar() {
