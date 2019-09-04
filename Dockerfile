@@ -1,21 +1,24 @@
-FROM golang:alpine as builder
+FROM golang:1.12.4 as builder
 
-# Install git.
-# Git is required for fetching the dependencies.
-RUN apk update && apk add --no-cache git
+RUN mkdir /build
+COPY . /build
 
-RUN mkdir /build 
-COPY go.mod /build/
-COPY go.sum /build/
 WORKDIR /build
-RUN go mod download
-ADD . /build/
-RUN go build -o main .
 
+RUN go mod download && \
+    export GO111MODULE=on && \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+######## Start a new stage from alpine #######
 FROM alpine:latest
-RUN apk --no-cache add ca-certificates
+
+RUN apk --no-cache add ca-certificates tzdata && \
+    cp /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime && \
+    apk del tzdata && rm -rf /var/cache/apk/*
 
 WORKDIR /app
-COPY --from=builder /build/main /app/
+# Copy the Pre-built binary file from the previous stage
+COPY --from=builder /build/main .
 
+EXPOSE 8000
 CMD ["./main"]
