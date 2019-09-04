@@ -7,7 +7,7 @@ WORKDIR /build
 
 RUN go mod download && \
     export GO111MODULE=on && \
-    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./src
 
 ######## Start a new stage from alpine #######
 FROM alpine:latest
