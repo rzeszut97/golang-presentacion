@@ -3,12 +3,14 @@ package main // Folder name
 import ( // Libraries
 
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 
 	"github.com/fatih/color"
 	"github.com/gadielMa/golang-presentacion/examples"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"gopkg.in/matryer/respond.v1"
 )
 
 type Persona struct {
@@ -29,14 +31,22 @@ var (
 	cyanBoldFmt = color.New(color.FgCyan, color.Bold)
 )
 
-func YourHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("{'details':{'sqlServerHealthIndicator':{'details':{'host':'DBNOVEDADMLPROD','version':'13.0.4001.0'},'status':{'code':'UP','description':''}}},'status':{'code':'UP','description':''}}"))
-}
-
 func main() {
-	r := mux.NewRouter()
-	r.HandleFunc("/health", YourHandler)
-	log.Fatal(http.ListenAndServe(":8080", r))
+	router := mux.NewRouter()
+	router.HandleFunc("/health", GetHealth).Methods("GET")
+	router.Handle("/metrics", promhttp.Handler())
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+
+	fmt.Println("Escuchando conexiones en el puerto :", port)
+
+	err := http.ListenAndServe(":"+port, router)
+	if err != nil {
+		fmt.Print(err)
+	}
 
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
 	cyanFmt.Println("██╔════╝ ██╔═══██╗██║     ██╔══██╗████╗  ██║██╔════╝               ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║")
@@ -81,4 +91,31 @@ func genericExample(example string, function func()) {
 	greenFmt.Println("#################################################")
 	function()
 	continuar()
+}
+
+type M map[string]interface{}
+
+var GetHealth = func(w http.ResponseWriter, r *http.Request) {
+	respond.With(w, r, http.StatusOK, generateJson("UP", ""))
+}
+
+func generateJson(status string, msjError string) M {
+	return M{
+		"status": M{
+			"code":        status,
+			"description": "",
+		},
+		"details": M{
+			"sqlServerHealthIndicator": M{
+				"status": M{
+					"code":        status,
+					"description": msjError,
+				},
+				"details": M{
+					"host":    "",
+					"version": "",
+				},
+			},
+		},
+	}
 }
