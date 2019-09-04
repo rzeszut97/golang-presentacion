@@ -29,13 +29,15 @@ var (
 	cyanBoldFmt = color.New(color.FgCyan, color.Bold)
 )
 
+var GetHealth = func(w http.ResponseWriter, r *http.Request) {
+	respond.With(w, r, http.StatusOK, "Jose Maria Listooooortiii")
+}
+
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/health", GetHealth) //.Methods("GET")
-	//router.Handle("/metrics", promhttp.Handler())
+	router.HandleFunc("/health", GetHealth)
 
-	fmt.Println("Escuchando conexiones en el puerto :8080")
-
+	fmt.Println("Escuchando conexiones en el puerto: 8080")
 	err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		panic(err)
@@ -84,31 +86,4 @@ func genericExample(example string, function func()) {
 	greenFmt.Println("#################################################")
 	function()
 	continuar()
-}
-
-type M map[string]interface{}
-
-var GetHealth = func(w http.ResponseWriter, r *http.Request) {
-	respond.With(w, r, http.StatusOK, generateJson("UP", ""))
-}
-
-func generateJson(status string, msjError string) M {
-	return M{
-		"status": M{
-			"code":        status,
-			"description": "",
-		},
-		"details": M{
-			"sqlServerHealthIndicator": M{
-				"status": M{
-					"code":        status,
-					"description": msjError,
-				},
-				"details": M{
-					"host":    "",
-					"version": "",
-				},
-			},
-		},
-	}
 }
