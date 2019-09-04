@@ -30,13 +30,13 @@ var (
 )
 
 func YourHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Gorilla!\n"))
+	w.Write([]byte("{'details':{'sqlServerHealthIndicator':{'details':{'host':'DBNOVEDADMLPROD','version':'13.0.4001.0'},'status':{'code':'UP','description':''}}},'status':{'code':'UP','description':''}}"))
 }
 
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/health", YourHandler)
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":8080", r))
 
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
 	cyanFmt.Println("██╔════╝ ██╔═══██╗██║     ██╔══██╗████╗  ██║██╔════╝               ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║")
