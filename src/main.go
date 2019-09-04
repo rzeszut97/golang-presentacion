@@ -3,12 +3,9 @@ package main // Folder name
 import ( // Libraries
 
 	"fmt"
-	"net/http"
 
 	"github.com/fatih/color"
 	"github.com/gadielMa/golang-presentacion/src/examples"
-	"github.com/gorilla/mux"
-	"gopkg.in/matryer/respond.v1"
 )
 
 type Persona struct {
@@ -29,19 +26,7 @@ var (
 	cyanBoldFmt = color.New(color.FgCyan, color.Bold)
 )
 
-var GetHealth = func(w http.ResponseWriter, r *http.Request) {
-	respond.With(w, r, http.StatusOK, "Jose Maria Listooooortiii")
-}
-
 func main() {
-	router := mux.NewRouter()
-	router.HandleFunc("/health", GetHealth)
-
-	fmt.Println("Escuchando conexiones en el puerto: 8080")
-	err := http.ListenAndServe(":8080", router)
-	if err != nil {
-		panic(err)
-	}
 
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
 	cyanFmt.Println("██╔════╝ ██╔═══██╗██║     ██╔══██╗████╗  ██║██╔════╝               ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║")
