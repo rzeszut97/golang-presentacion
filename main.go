@@ -35,7 +35,7 @@ func YourHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", YourHandler)
+	r.HandleFunc("/health", YourHandler)
 	log.Fatal(http.ListenAndServe(":8000", r))
 
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
