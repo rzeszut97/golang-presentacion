@@ -4,12 +4,10 @@ import ( // Libraries
 
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/fatih/color"
 	"github.com/gadielMa/golang-presentacion/src/examples"
 	"github.com/gorilla/mux"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"gopkg.in/matryer/respond.v1"
 )
 
@@ -33,19 +31,14 @@ var (
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/health", GetHealth).Methods("GET")
-	router.Handle("/metrics", promhttp.Handler())
+	router.HandleFunc("/health", GetHealth) //.Methods("GET")
+	//router.Handle("/metrics", promhttp.Handler())
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+	fmt.Println("Escuchando conexiones en el puerto :8080")
 
-	fmt.Println("Escuchando conexiones en el puerto :", port)
-
-	err := http.ListenAndServe(":"+port, router)
+	err := http.ListenAndServe(":8080", router)
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
 	}
 
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
