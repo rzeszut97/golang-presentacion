@@ -1,8 +1,11 @@
 package main // Folder name
 
 import ( // Libraries
-
 	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"github.com/fatih/color"
 	"github.com/gadielMa/golang-presentacion/src/examples"
@@ -27,6 +30,13 @@ var (
 )
 
 func main() {
+
+	r := mux.NewRouter()
+	// Routes consist of a path and a handler function.
+	r.HandleFunc("/health", YourHandler)
+
+	// Bind to a port and pass our router in
+	log.Fatal(http.ListenAndServe(":8080", r))
 
 	cyanFmt.Println("\n ██████╗  ██████╗ ██╗      █████╗ ███╗   ██╗ ██████╗               ██████╗ ██████╗ ███████╗███████╗███████╗███╗   ██╗████████╗ █████╗  ██████╗██╗ ██████╗ ███╗   ██╗")
 	cyanFmt.Println("██╔════╝ ██╔═══██╗██║     ██╔══██╗████╗  ██║██╔════╝               ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗██╔════╝██║██╔═══██╗████╗  ██║")
@@ -73,4 +83,8 @@ func genericExample(example string, function func()) {
 	greenFmt.Println("#################################################")
 	function()
 	continuar()
+}
+
+func YourHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("equide\n"))
 }
